@@ -59,6 +59,7 @@ export {
   Fade,
   Flex,
   FlexProps,
+  FormHelperText,
   Grid,
   GridItem,
   Heading,
