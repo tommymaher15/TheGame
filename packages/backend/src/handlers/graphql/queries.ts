@@ -20,6 +20,12 @@ gql`
     }
   }
 
+  query GetPlayerByDiscordId($discordId: String) {
+    player(where: { discord_id: { _eq: $discordId } }) {
+      id
+    }
+  }
+
   query GetQuestById($quest_id: uuid!) {
     quest_by_pk(id: $quest_id) {
       id
@@ -100,4 +106,13 @@ gql`
     }
   }
   ${GuildFragment}
+
+  query GetGuildMetadata($discordId: String!) {
+    guild_metadata(where: { discord_id: { _eq: $discordId } }) {
+      guild_id
+      creator_id
+      discord_id
+      discord_metadata
+    }
+  }
 `;
