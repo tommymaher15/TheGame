@@ -58,7 +58,6 @@ export const usePlayerFilter = (): PlayerFilter => {
     queryVariables,
     setQueryVariables,
   ] = useState<GetPlayersQueryVariables>(defaultQueryVariables);
-
   const aggregates = usePlayerAggregates();
 
   const setQueryVariable: QueryVariableSetter = useCallback(

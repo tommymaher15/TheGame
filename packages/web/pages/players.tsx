@@ -46,6 +46,7 @@ const Players: React.FC<Props> = () => {
     moreAvailable,
   } = usePlayerFilter();
 
+<<<<<<< HEAD
   const loaderRef = useRef<HTMLDivElement>(null);
 
   const onScreen = useOnScreen(loaderRef);
@@ -60,6 +61,8 @@ const Players: React.FC<Props> = () => {
     loadMore();
   }, [loadMore]);
 
+=======
+>>>>>>> frontend changes to use cached profile rather than remote schema 🍥
   return (
     <PageContainer>
       <HeadComponent url="https://my.metagame.wtf/players" />
@@ -69,6 +72,7 @@ const Players: React.FC<Props> = () => {
         pb={{ base: '16', lg: '0' }}
       >
         <PlayerFilter
+<<<<<<< HEAD
           fetching={fetching}
           fetchingMore={fetchingMore}
           aggregates={aggregates}
@@ -92,6 +96,20 @@ const Players: React.FC<Props> = () => {
             </Text>
           )}
         </VStack>
+=======
+          {...{
+            fetching,
+            aggregates,
+            queryVariables,
+            setQueryVariable,
+            resetFilter,
+          }}
+          players={players ?? []}
+        />
+        {error && <Text>Error: {error.message}</Text>}
+        {fetching && <LoadingState />}
+        {players && !fetching && !error && <PlayerList {...{ players }} />}
+>>>>>>> frontend changes to use cached profile rather than remote schema 🍥
       </VStack>
     </PageContainer>
   );
