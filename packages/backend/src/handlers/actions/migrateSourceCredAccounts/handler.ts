@@ -84,7 +84,6 @@ export const migrateSourceCredAccounts = async (
       const rank = computeRank(index);
       return {
         ethereum_address: ethAddress.toLowerCase(),
-        scIdentityId: a.account.identity.id,
         totalXp: a.totalCred,
         rank,
         discordId,
