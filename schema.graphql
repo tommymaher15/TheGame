@@ -591,6 +591,10 @@ type DiscordGuildAuthResponse {
   success: Boolean!
 }
 
+type ExpiredPlayerProfiles {
+  ids: [String]!
+}
+
 """
 columns and relationships of "guild"
 """
@@ -2882,14 +2886,14 @@ type mutation_root {
   ): skill
 
   """
-  perform the action: "updateAllBoxProfiles"
+  perform the action: "updateExpiredIDXProfiles"
   """
-  updateAllBoxProfiles: uuid!
+  updateExpiredIDXProfiles: ExpiredPlayerProfiles
 
   """
-  perform the action: "updateBoxProfile"
+  perform the action: "updateIDXProfile"
   """
-  updateBoxProfile: UpdateBoxProfileResponse
+  updateIDXProfile(playerId: uuid): CacheProcessOutput
 
   """
   perform the action: "updateQuestCompletion"
@@ -5015,11 +5019,13 @@ columns and relationships of "profile_cache"
 """
 type profile_cache {
   backgroundImageURL: String
+  country: String
   description: String
   emoji: String
   gender: String
   id: uuid!
   imageURL: String
+  last_checked_at: timestamptz
   location: String
   name: String
 
@@ -5071,11 +5077,13 @@ input profile_cache_bool_exp {
   _not: profile_cache_bool_exp
   _or: [profile_cache_bool_exp]
   backgroundImageURL: String_comparison_exp
+  country: String_comparison_exp
   description: String_comparison_exp
   emoji: String_comparison_exp
   gender: String_comparison_exp
   id: uuid_comparison_exp
   imageURL: String_comparison_exp
+  last_checked_at: timestamptz_comparison_exp
   location: String_comparison_exp
   name: String_comparison_exp
   player: player_bool_exp
@@ -5099,11 +5107,13 @@ input type for inserting data into table "profile_cache"
 """
 input profile_cache_insert_input {
   backgroundImageURL: String
+  country: String
   description: String
   emoji: String
   gender: String
   id: uuid
   imageURL: String
+  last_checked_at: timestamptz
   location: String
   name: String
   player: player_obj_rel_insert_input
@@ -5114,11 +5124,13 @@ input profile_cache_insert_input {
 """aggregate max on columns"""
 type profile_cache_max_fields {
   backgroundImageURL: String
+  country: String
   description: String
   emoji: String
   gender: String
   id: uuid
   imageURL: String
+  last_checked_at: timestamptz
   location: String
   name: String
   playerId: uuid
@@ -5130,11 +5142,13 @@ order by max() on columns of table "profile_cache"
 """
 input profile_cache_max_order_by {
   backgroundImageURL: order_by
+  country: order_by
   description: order_by
   emoji: order_by
   gender: order_by
   id: order_by
   imageURL: order_by
+  last_checked_at: order_by
   location: order_by
   name: order_by
   playerId: order_by
@@ -5144,11 +5158,13 @@ input profile_cache_max_order_by {
 """aggregate min on columns"""
 type profile_cache_min_fields {
   backgroundImageURL: String
+  country: String
   description: String
   emoji: String
   gender: String
   id: uuid
   imageURL: String
+  last_checked_at: timestamptz
   location: String
   name: String
   playerId: uuid
@@ -5160,11 +5176,13 @@ order by min() on columns of table "profile_cache"
 """
 input profile_cache_min_order_by {
   backgroundImageURL: order_by
+  country: order_by
   description: order_by
   emoji: order_by
   gender: order_by
   id: order_by
   imageURL: order_by
+  last_checked_at: order_by
   location: order_by
   name: order_by
   playerId: order_by
@@ -5204,11 +5222,13 @@ ordering options when selecting data from "profile_cache"
 """
 input profile_cache_order_by {
   backgroundImageURL: order_by
+  country: order_by
   description: order_by
   emoji: order_by
   gender: order_by
   id: order_by
   imageURL: order_by
+  last_checked_at: order_by
   location: order_by
   name: order_by
   player: player_order_by
@@ -5231,6 +5251,9 @@ enum profile_cache_select_column {
   backgroundImageURL
 
   """column name"""
+  country
+
+  """column name"""
   description
 
   """column name"""
@@ -5244,6 +5267,9 @@ enum profile_cache_select_column {
 
   """column name"""
   imageURL
+
+  """column name"""
+  last_checked_at
 
   """column name"""
   location
@@ -5263,11 +5289,13 @@ input type for updating data in table "profile_cache"
 """
 input profile_cache_set_input {
   backgroundImageURL: String
+  country: String
   description: String
   emoji: String
   gender: String
   id: uuid
   imageURL: String
+  last_checked_at: timestamptz
   location: String
   name: String
   playerId: uuid
@@ -5280,6 +5308,9 @@ update columns of table "profile_cache"
 enum profile_cache_update_column {
   """column name"""
   backgroundImageURL
+
+  """column name"""
+  country
 
   """column name"""
   description
@@ -5295,6 +5326,9 @@ enum profile_cache_update_column {
 
   """column name"""
   imageURL
+
+  """column name"""
+  last_checked_at
 
   """column name"""
   location
@@ -6267,16 +6301,6 @@ type query_root {
 
   """fetch data from the table: "skill" using primary key columns"""
   skill_by_pk(id: uuid!): skill
-
-  """
-  retrieve the result of action: "updateAllBoxProfiles"
-  """
-  updateAllBoxProfiles(
-    """
-    id of the action: "updateAllBoxProfiles"
-    """
-    id: uuid!
-  ): updateAllBoxProfiles
 }
 
 """
@@ -9260,16 +9284,6 @@ type subscription_root {
 
   """fetch data from the table: "skill" using primary key columns"""
   skill_by_pk(id: uuid!): skill
-
-  """
-  retrieve the result of action: "updateAllBoxProfiles"
-  """
-  updateAllBoxProfiles(
-    """
-    id of the action: "updateAllBoxProfiles"
-    """
-    id: uuid!
-  ): updateAllBoxProfiles
 }
 
 scalar timestamptz
@@ -9295,24 +9309,12 @@ type TokenBalances {
   seedBalance: String!
 }
 
-"""
-fields of action: "updateAllBoxProfiles"
-"""
-type updateAllBoxProfiles {
-  """the time at which this action was created"""
-  created_at: timestamptz
-
-  """errors related to the invocation"""
-  errors: json
-
-  """the unique id of an action"""
-  id: uuid
-
-  """the output fields of this action"""
-  output: CacheProcessOutput
+type UpdateBoxProfileResponse {
+  success: Boolean!
+  updatedProfiles: [String!]!
 }
 
-type UpdateBoxProfileResponse {
+type UpdateIDXProfileResponse {
   success: Boolean!
   updatedProfiles: [String!]!
 }
