@@ -396,6 +396,9 @@
     schema: public
     name: player_skill
   object_relationships:
+  - name: player
+    using:
+      foreign_key_constraint_on: player_id
   - name: Skill
     using:
       foreign_key_constraint_on: skill_id
@@ -421,7 +424,9 @@
   - role: public
     permission:
       columns:
+      - id
       - player_id
+      - rank
       - skill_id
       filter: {}
       allow_aggregations: true
