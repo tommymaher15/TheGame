@@ -12,7 +12,10 @@ import React, { useCallback, useEffect, useRef } from 'react';
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
+
+
 export const getStaticProps = async () => {
+  console.log("WE MADE IT")
   const [ssrClient, ssrCache] = getSsrClient();
 
   // This populates the cache server-side
@@ -21,7 +24,9 @@ export const getStaticProps = async () => {
     // eslint-disable-next-line no-console
     console.error('getPlayers error', error);
   }
+
   await getPlayerFilters(ssrClient);
+  console.log(ssrCache.extractData())
 
   return {
     props: {

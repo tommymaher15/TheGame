@@ -2318,7 +2318,7 @@ type mutation_root {
   """
   delete single row from the table: "player_skill"
   """
-  delete_player_skill_by_pk(player_id: uuid!, skill_id: uuid!): player_skill
+  delete_player_skill_by_pk(id: uuid!): player_skill
 
   """
   delete data from the table: "player_type"
@@ -4215,7 +4215,7 @@ unique or primary key constraints on table "player_skill"
 """
 enum player_skill_constraint {
   """unique or primary key constraint"""
-  Player_Skill_unique_key
+  player_skill_pkey
 }
 
 """
@@ -4317,8 +4317,7 @@ input player_skill_order_by {
 primary key columns input for table: "player_skill"
 """
 input player_skill_pk_columns_input {
-  player_id: uuid!
-  skill_id: uuid!
+  id: uuid!
 }
 
 """
@@ -5829,7 +5828,7 @@ type query_root {
   ): player_skill_aggregate!
 
   """fetch data from the table: "player_skill" using primary key columns"""
-  player_skill_by_pk(player_id: uuid!, skill_id: uuid!): player_skill
+  player_skill_by_pk(id: uuid!): player_skill
 
   """
   fetch data from the table: "player_type"
@@ -8769,7 +8768,7 @@ type subscription_root {
   ): player_skill_aggregate!
 
   """fetch data from the table: "player_skill" using primary key columns"""
-  player_skill_by_pk(player_id: uuid!, skill_id: uuid!): player_skill
+  player_skill_by_pk(id: uuid!): player_skill
 
   """
   fetch data from the table: "player_type"
