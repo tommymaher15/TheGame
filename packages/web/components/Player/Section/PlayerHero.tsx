@@ -92,9 +92,7 @@ export const PlayerHero: React.FC<Props> = ({ player }) => {
               )}`}
               maxH="6rem"
             >
-              
-                <ColorBar mask={type.mask} />
-              
+              <ColorBar mask={type.mask} />
             </Link>
             <Text color="blueLight" mt={4} style={{ textIndent: 16 }}>
               {type.description}
